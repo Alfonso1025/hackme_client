@@ -5,6 +5,7 @@ import './Login.css'
 
 
 const Login= (props)=>{
+
 const remoteServer = process.env.REACT_APP_REMOTE_SERVER
 const localServer = process.env.REACT_APP_LOCAL_SERVER
 const navigate = useNavigate();
@@ -49,15 +50,15 @@ const submitLoginForm = async(e)=>{
    }   
    try {
        const body = {email, password}
-       const response = await  fetch(`${remoteServer}/login`,{
+       const response = await  fetch(`http://hackme.alfonso-softtech.com/app1/login`,{
            method:'POST',
            headers:{'content-type':'application/json'},
            body: JSON.stringify(body)
         })
         const loggedUser = await response.json()
-        console.log(loggedUser)
+        console.log('thisnis the response: ',loggedUser)
         //unsuccesful login
-        if(loggedUser.code != 200){
+        if(loggedUser.code !== 200){
             if(loggedUser.code === 400){
                 if(loggedUser.message === 'missing_credentials')setErrorMessage('email and password are required fields')
                 else if(loggedUser.message === 'invalid_email') setErrorMessage('invalid_email_format')
@@ -77,9 +78,12 @@ const submitLoginForm = async(e)=>{
         //successful login
 
         console.log('sucessful login')
-        console.log(loggedUser)
-        setUserId(loggedUser.data.id)
-        setUserName(loggedUser.data.userName)
+        console.log('this is the user: ',loggedUser)
+        const id = loggedUser.data.id
+        const name = loggedUser.data.userName
+        console.log('this is the id', id)
+        setUserId(id)
+        setUserName(name)
         setIsAuthenticated(true)
         navigate('/dashboard')
 

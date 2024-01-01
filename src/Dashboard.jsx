@@ -19,12 +19,10 @@ const [isFetchError, setIsFetchError] = useState(false)
 
 async function getMovies(){
         try {
-           const response = await fetch(`${remoteServer}/getMovies`,{
-               method:'GET',
-               headers:{token:localStorage.token}
-           }) 
-          
+           const response = await fetch(`http://hackme.alfonso-softtech.com/app1/movies`) 
+           console.log('this is the response: ',response)
            const parseResponse = await response.json()
+
            if(parseResponse.code !== 200){
             setErrorMessage('There was an error retrieving the movies')
             setIsFetchError(true)
@@ -41,7 +39,9 @@ async function getMovies(){
           setErrorMessage('error retrieving movies')
         }
     }
-
+useEffect(()=>{
+    getMovies()
+},[])
 
 return (
         <div className='dashboard-wrapper'>
